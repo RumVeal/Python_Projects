@@ -1,4 +1,4 @@
-from aiogram import Router, types
+from aiogram import Router, types, F
 from aiogram.filters import Command
 from keyboards.menu import shop_menu
 
@@ -10,3 +10,7 @@ async def cmd_shop(message: types.Message):
         "Вот наши популярные категории:",
         reply_markup=shop_menu()
     )
+
+@router.message(F.text == "💄 Помады")
+async def lipstick_category(message: types.Message):
+    await message.answer("Вы выбрали категорию '💄 Помады'. Вот наши лучшие предложения")
