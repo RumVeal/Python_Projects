@@ -1,0 +1,38 @@
+<RoundedButton@Button>:
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: 0.20, 0.60, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20]
+
+FloatLayout:
+    RoundedButton:
+        text: "UP"
+        size_hint: None, None
+        size: dp(60), dp(30)
+        pos_hint: {"center_x": 0.5, "center_y": 0.35}
+        on_release: app.up()
+
+    RoundedButton:
+        text: "LEFT"
+        size_hint: None, None
+        size: dp(60), dp(30)
+        pos_hint: {"center_x": 0.45, "center_y": 0.3}
+        on_release: app.left()
+
+    RoundedButton:
+        text: "RIGHT"
+        size_hint: None, None
+        size: dp(60), dp(30)
+        pos_hint: {"center_x": 0.55, "center_y": 0.3}
+        on_release: app.right()
+
+    RoundedButton:
+        text: "DOWN"
+        size_hint: None, None
+        size: dp(60), dp(30)
+        pos_hint: {"center_x": 0.5, "center_y": 0.25}
+        on_release: app.down()
