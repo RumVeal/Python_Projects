@@ -1,18 +1,15 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.widget import Widget
-from kivy.properties import (
-    NumericProperty, ReferenceListProperty, ObjectProperty
-)
-from kivy.vector import Vector
-from kivy.clock import Clock
+
     
 class DroneUI(App):
+    count_on_off = 0
+    
     def build(self):
         return Builder.load_file("ui.kv")
     
-    def up(self):
-        print("Going UP!")
+    def forward(self):
+        print("Going FORWADR")
         
     def left(self):
         print("Going LEFT")
@@ -20,9 +17,27 @@ class DroneUI(App):
     def right(self):
         print("Going RIGHT")
         
+    def backward(self):
+        print("Going BACKWARD")
+    
+    def on_off(self, button):
+        if self.count_on_off == 0:
+            print("ON")
+            self.count_on_off = 1
+            button.text = "ON"
+            button.btn_color = (0, 0.7, 0, 1)
+        else:
+            print("OFF")
+            button.text = "OFF"
+            button.btn_color = (0.7, 0, 0, 1)
+            self.count_on_off = 0
+            
+    def up(self):
+        print("UP")
+        
     def down(self):
-        print("Going DOWN")
-
+        print("DOWN")
+        
 
 if __name__ == '__main__':
     DroneUI().run()
