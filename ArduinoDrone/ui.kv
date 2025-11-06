@@ -1,38 +1,121 @@
+#:import dp kivy.metrics.dp
+
 <RoundedButton@Button>:
-    background_color: 0, 0, 0, 0
+    background_normal: ""
+    background_down: ""
+    background_color: 1, 1, 1, 0
+    color: 1, 1, 1, 1
+    font_size: 35
+    canvas.before:
+        Color:
+            rgba: (0.20, 0.60, 1, 1) if self.state == "normal" else (0.10, 0.40, 0.9, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [20]
+
+<RoundedControlButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 0.20, 0.60, 1, 0
+    color: 1, 1, 1, 1
+    font_size: "18sp"
+    size_hint_y: None
+    height: dp(75)
     canvas.before:
         Color:
             rgba: 0.20, 0.60, 1, 1
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [20]
+            radius: [24] 
 
-FloatLayout:
+<EllipseButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 1, 1, 1, 0
+    size_hint: None, None
+    pos_hint: {"center_x": 0.5}
+    y: self.parent.center_y if self.parent else 0
+    size: dp(240), dp(240)
+    btn_color: 0.7, 0, 0, 1
+    canvas.before:
+        Color:
+            rgba: self.btn_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [240]
+ 
+<DPad@GridLayout>:
+    rows: 3
+    cols: 3
+    size_hint: None, None
+    size: dp(180), dp(180)
+    spacing: dp(0)
+    row_force_default: True
+    row_default_height: dp(60)
+    col_force_default: True
+    col_default_width: dp(60)
+
+    Widget:
     RoundedButton:
-        text: "UP"
-        size_hint: None, None
-        size: dp(60), dp(30)
-        pos_hint: {"center_x": 0.5, "center_y": 0.35}
-        on_release: app.up()
+        text: "^"
+        on_release: app.forward()
+    Widget:
 
     RoundedButton:
-        text: "LEFT"
-        size_hint: None, None
-        size: dp(60), dp(30)
-        pos_hint: {"center_x": 0.45, "center_y": 0.3}
+        text: "<"
         on_release: app.left()
-
+    Widget:
     RoundedButton:
-        text: "RIGHT"
-        size_hint: None, None
-        size: dp(60), dp(30)
-        pos_hint: {"center_x": 0.55, "center_y": 0.3}
+        text: ">"
         on_release: app.right()
 
+    Widget:
     RoundedButton:
-        text: "DOWN"
+        text: "v"
+        on_release: app.backward()
+    Widget:
+
+
+
+
+FloatLayout:
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.3, 1
+        Rectangle:
+            pos: (self.width/2 - dp(240), dp(0))
+            size: (dp(480), self.height)
+    EllipseButton:
+        id: power_btn
+        text: "OFF"
+        btn_color: 0.7, 0, 0, 1
+        on_release: app.on_off(self)
+    DPad:
         size_hint: None, None
-        size: dp(60), dp(30)
-        pos_hint: {"center_x": 0.5, "center_y": 0.25}
-        on_release: app.down()
+        pos: (self.parent.width/2 - dp(210), self.parent.height/2- dp(240))
+
+    
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None, None
+        width: dp(120)
+        height: self.minimum_height
+        pos: ((self.parent.width/2) + dp(60), self.parent.height/2- dp(240))
+        spacing: dp(30)
+
+        RoundedControlButton:
+            text: "UP"
+            on_press: self.canvas.before.children[0].rgba = (0.10, 0.40, 0.9, 1)
+            on_release:
+                self.canvas.before.children[0].rgba = (0.20, 0.60, 1, 1)
+                app.up()
+
+        RoundedControlButton:
+            text: "DOWN"
+            on_press: self.canvas.before.children[0].rgba = (0.10, 0.40, 0.9, 1)
+            on_release:
+                self.canvas.before.children[0].rgba = (0.20, 0.60, 1, 1)
+                app.down()
