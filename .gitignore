@@ -1,2 +1,4 @@
 config.py
 venv
+*/.DS_Store
+*.jpg
