@@ -1,4 +1,5 @@
 #:import dp kivy.metrics.dp
+#:import Window kivy.core.window.Window
 
 <RoundedButton@Button>:
     background_normal: ""
@@ -12,7 +13,7 @@
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [20]
+            radius: [self.width/4]
 
 <RoundedControlButton@Button>:
     background_normal: ""
@@ -21,7 +22,7 @@
     color: 1, 1, 1, 1
     font_size: "18sp"
     size_hint_y: None
-    height: dp(75)
+    height: Window.height * 0.125
     canvas.before:
         Color:
             rgba: 0.20, 0.60, 1, 1
@@ -35,9 +36,8 @@
     background_down: ""
     background_color: 1, 1, 1, 0
     size_hint: None, None
-    pos_hint: {"center_x": 0.5}
-    y: self.parent.center_y if self.parent else 0
-    size: dp(240), dp(240)
+    pos_hint: {"center_x": 0.5, "center_y": 0.75}
+    size: (min(Window.width, Window.height) * 0.40, min(Window.width, Window.height) * 0.40)
     btn_color: 0.7, 0, 0, 1
     canvas.before:
         Color:
@@ -45,18 +45,18 @@
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [240]
+            radius: [self.width/2]
  
 <DPad@GridLayout>:
     rows: 3
     cols: 3
     size_hint: None, None
-    size: dp(180), dp(180)
+    size: (min(Window.width, Window.height) * 0.30, min(Window.width, Window.height) * 0.30)
     spacing: dp(0)
     row_force_default: True
-    row_default_height: dp(60)
+    row_default_height: min(Window.width, Window.height) * 0.10
     col_force_default: True
-    col_default_width: dp(60)
+    col_default_width: min(Window.width, Window.height) * 0.10
 
     Widget:
     RoundedButton:
@@ -86,8 +86,8 @@ FloatLayout:
         Color:
             rgba: 0.2, 0.2, 0.3, 1
         Rectangle:
-            pos: (self.width/2 - dp(240), dp(0))
-            size: (dp(480), self.height)
+            pos: (self.width/4, dp(0))
+            size: (self.width/2, self.height)
     EllipseButton:
         id: power_btn
         text: "OFF"
@@ -95,16 +95,16 @@ FloatLayout:
         on_release: app.on_off(self)
     DPad:
         size_hint: None, None
-        pos: (self.parent.width/2 - dp(210), self.parent.height/2- dp(240))
+        pos_hint: {"center_x":0.40625, "center_y":15/56}
 
     
     BoxLayout:
         orientation: "vertical"
         size_hint: None, None
-        width: dp(120)
+        width: min(Window.width, Window.height) * 0.20
         height: self.minimum_height
-        pos: ((self.parent.width/2) + dp(60), self.parent.height/2- dp(240))
-        spacing: dp(30)
+        pos_hint: {"center_x": 0.625, "center_y": 15/56}
+        spacing: Window.height/30
 
         RoundedControlButton:
             text: "UP"
