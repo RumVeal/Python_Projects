@@ -202,14 +202,14 @@ FloatLayout:
             size: self.texture_size
 
         Button:
-            text: "-Info"
+            text: "-Information"
             size_hint: None, None
             color: 1, 1, 1, 1
             background_color: 1, 1, 1, 0
             font_size: min(self.parent.width, self.parent.height) * 0.13
             pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.5)
             size: self.texture_size
-            on_release: app.menu()
+            on_release: app.menu_info()
 
         Button:
             text: "-Contact"
@@ -219,4 +219,11 @@ FloatLayout:
             font_size: min(self.parent.width, self.parent.height) * 0.13
             pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.25)
             size: self.texture_size
+            on_release: app.menu_contact()
             
+        FloatLayout:
+            id: menu_content
+            size_hint: None, None
+            pos: (Window.width, Window.height*3/4)
+            heigh: Window.height/4
+            width: Window.width * 0.25
