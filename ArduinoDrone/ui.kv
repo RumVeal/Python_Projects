@@ -6,7 +6,7 @@
     background_down: ""
     background_color: 1, 1, 1, 0
     color: 1, 1, 1, 1
-    font_size: 35
+    font_size: min(Window.width, Window.height) * 0.05
     canvas.before:
         Color:
             rgba: (0.20, 0.60, 1, 1) if self.state == "normal" else (0.10, 0.40, 0.9, 1)
@@ -20,7 +20,7 @@
     background_down: ""
     background_color: 0.20, 0.60, 1, 0
     color: 1, 1, 1, 1
-    font_size: "18sp"
+    font_size: min(Window.width, Window.height) * 0.03
     size_hint_y: None
     height: Window.height * 0.125
     canvas.before:
@@ -36,6 +36,7 @@
     background_down: ""
     background_color: 1, 1, 1, 0
     size_hint: None, None
+    font_size: min(Window.width, Window.height) * 0.06
     pos_hint: {"center_x": 0.5, "center_y": 0.75}
     size: (min(Window.width, Window.height) * 0.40, min(Window.width, Window.height) * 0.40)
     btn_color: 0.7, 0, 0, 1
@@ -46,6 +47,27 @@
             pos: self.pos
             size: self.size
             radius: [self.width/2]
+
+<MenuButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 0, 0, 0, 0   # фон прозрачный (или поменяешь)
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.x, self.y + self.height * 0.66
+            size: self.width * 0.6, self.height * 0.07
+
+        Rectangle:
+            pos: self.x, self.y + self.height * 0.33
+            size: self.width * 0.6, self.height * 0.07
+
+        Rectangle:
+            pos: self.x, self.y
+            size: self.width * 0.6, self.height * 0.07
  
 <DPad@GridLayout>:
     rows: 3
@@ -83,6 +105,10 @@
 
 FloatLayout:
     canvas.before:
+        Rectangle:
+            source: "space.jpg"
+            pos: self.pos
+            size: self.size
         Color:
             rgba: 0.2, 0.2, 0.3, 1
         Rectangle:
@@ -119,3 +145,78 @@ FloatLayout:
             on_release:
                 self.canvas.before.children[0].rgba = (0.20, 0.60, 1, 1)
                 app.down()
+    
+    Label:
+        text: "Arduino"
+        color: 1, 1, 1, 1
+        size_hint: None, None
+        size: self.texture_size
+        font_size: min(Window.width, Window.height) * 0.125
+        pos_hint: {"center_x": 0.125, "center_y": 0.5}
+        canvas.before:
+            PushMatrix:
+            Rotate:
+                angle: 90
+                origin: self.center
+        canvas.after:
+            PopMatrix
+    
+    Label:
+        text: "Drone"
+        color: 1, 1, 1, 1
+        size_hint: None, None
+        size: self.texture_size
+        font_size: min(Window.width, Window.height) * 0.125
+        pos_hint: {"center_x": 0.875, "center_y": 0.5}
+        canvas.before:
+            PushMatrix:
+            Rotate:
+                angle: -90
+                origin: self.center
+        canvas.after:
+            PopMatrix
+
+    MenuButton:
+        size: (min(Window.width, Window.height) * 0.08, min(Window.width, Window.height) * 0.07)
+        pos_hint: {"right": 1, "top": 1}
+        on_release: app.side_panel()
+
+    FloatLayout:
+        id: side_panel
+        size_hint: None, None
+        pos: (Window.width, Window.height*3/4)
+        width: Window.width * 0.25
+        height: Window.height/4
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.14, 0.95
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "Menu"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            font_size: min(self.parent.width, self.parent.height) * 0.15
+            pos: (self.parent.x + self.parent.width * 0.25, self.parent.y + self.parent.height * 0.75)
+            size: self.texture_size
+
+        Button:
+            text: "-Info"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            background_color: 1, 1, 1, 0
+            font_size: min(self.parent.width, self.parent.height) * 0.13
+            pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.5)
+            size: self.texture_size
+            on_release: app.menu()
+
+        Button:
+            text: "-Contact"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            background_color: 1, 1, 1, 0
+            font_size: min(self.parent.width, self.parent.height) * 0.13
+            pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.25)
+            size: self.texture_size
+            
