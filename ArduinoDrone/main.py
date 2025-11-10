@@ -3,9 +3,9 @@ from kivy.lang import Builder
 from kivy.animation import Animation
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.label import Label
-from kivy.metrics import dp
 from kivy.graphics import Color, Rectangle
 from kivy.uix.button import Button
+from kivy.properties import BooleanProperty
 
     
 class DroneUI(App):
@@ -13,6 +13,7 @@ class DroneUI(App):
     
     def build(self):
         return Builder.load_file("ui.kv")
+    
     
     def forward(self):
         print("Going FORWADR")
@@ -44,6 +45,8 @@ class DroneUI(App):
     def down(self):
         print("DOWN")
         
+        
+        
     def side_panel(self):
         panel = self.root.ids.side_panel
         
@@ -52,90 +55,36 @@ class DroneUI(App):
         else:
             Animation(x=self.root.width, d=0.25).start(panel)
     
-    def menu_info(self):
-        panel = self.root.ids.side_panel
-        info = self.root.ids.menu_content
-
-        new_box = FloatLayout(
-            size_hint=(None, None),
-            pos=(panel.x, panel.y),
-            size=(panel.width, panel.height)
-        )
+    def info_panel(self):
+        info_panel = self.root.ids.info_panel
+        side_panel = self.root.ids.side_panel
         
-        with new_box.canvas.before:
-            Color(0.12, 0.12, 0.14, 1)   # rgba
-            rect = Rectangle(pos=new_box.pos, size=new_box.size)
+        if info_panel.x >= self.root.width:
+            Animation(x=self.root.width - info_panel.width, d=0.25).start(info_panel)
+        if side_panel.x < self.root.width:
+            Animation(x=self.root.width, d=0.25).start(side_panel)
         
-        new_box.bind(pos=lambda *a: setattr(rect, 'pos', new_box.pos))
-        new_box.bind(size=lambda *a: setattr(rect, 'size', new_box.size))
+    def contact_panel(self):
+        contact_panel = self.root.ids.contact_panel
+        side_panel = self.root.ids.side_panel
         
-        lbl = Label(
-            text="Information",
-            color=(1,1,1,1),
-            font_size=min(panel.width, panel.height) * 0.15,
-            pos_hint={"center_x": 0.5, "center_y": 0.9}
-        )
+        if contact_panel.x >= self.root.width:
+            Animation(x=self.root.width - contact_panel.width, d=0.25).start(contact_panel)
+        if side_panel.x < self.root.width:
+            Animation(x=self.root.width, d=0.25).start(side_panel)
+    
+    def back_button(self):
+        info_panel = self.root.ids.info_panel
+        side_panel = self.root.ids.side_panel
+        contact_panel = self.root.ids.contact_panel
         
-        lbl.bind(texture_size=lbl.setter("size"))
-
+        if contact_panel.x < self.root.width:
+            Animation(x=self.root.width, d=0.25).start(contact_panel)
         
-        back_btn = Button(
-            text="Back",
-            size_hint=(None, None),
-            pos_hint={"center_x": 0.5, "center_y": 0.1},
-            background_normal="",
-            background_color=(0.2, 0.6, 1, 0),
-            color=(1, 1, 1, 1)
-        )
-        back_btn.bind(texture_size=back_btn.setter("size"))
-        back_btn.bind(on_release=self.menu_back)
-        
-        new_box.add_widget(lbl)
-        new_box.add_widget(back_btn)
-        
-        info.add_widget(new_box)
-        
-    def menu_contact(self):
-        panel = self.root.ids.side_panel
-        info = self.root.ids.menu_content
-
-        new_box = FloatLayout(
-            size_hint=(None, None),
-            pos=(panel.x, panel.y),
-            size=(panel.width, panel.height)
-        )
-        
-        with new_box.canvas.before:
-            Color(0.12, 0.12, 0.14, 1)   # rgba
-            rect = Rectangle(pos=new_box.pos, size=new_box.size)
-        
-        new_box.bind(pos=lambda *a: setattr(rect, 'pos', new_box.pos))
-        new_box.bind(size=lambda *a: setattr(rect, 'size', new_box.size))
-        
-        lbl = Label(
-            text="Contact",
-            color=(1,1,1,1),
-            font_size=min(panel.width, panel.height) * 0.15,
-            pos_hint={"center_x": 0.5, "center_y": 0.9}
-        )
-        lbl.bind(texture_size=lbl.setter("size"))
-
-        
-        back_btn = Button(
-            text="Back",
-            size_hint=(None, None),
-            pos_hint={"center_x": 0.5, "center_y": 0.1},
-            background_normal="",
-            background_color=(0.2, 0.6, 1, 0),
-            color=(1, 1, 1, 1)
-        )
-        back_btn.bind(texture_size=back_btn.setter("size"))
-        back_btn.bind(on_release=self.menu_back)
-        
-        new_box.add_widget(lbl)
-        new_box.add_widget(back_btn)
-        
-        info.add_widget(new_box)
+        if info_panel.x < self.root.width:
+            Animation(x=self.root.width, d=0.25).start(info_panel)
+        if side_panel.x >= self.root.width:
+            Animation(x=self.root.width - side_panel.width, d=0.25).start(side_panel)
 
     def menu_back(self, instance):
         info = self.root.ids.menu_content
