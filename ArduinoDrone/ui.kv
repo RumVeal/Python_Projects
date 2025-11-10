@@ -104,6 +104,7 @@
 
 
 FloatLayout:
+    size_hint: 1, 1
     canvas.before:
         Rectangle:
             source: "space.jpg"
@@ -127,10 +128,10 @@ FloatLayout:
     BoxLayout:
         orientation: "vertical"
         size_hint: None, None
-        width: min(Window.width, Window.height) * 0.20
+        width: min(self.parent.width, self.parent.height) * 0.20
         height: self.minimum_height
         pos_hint: {"center_x": 0.625, "center_y": 15/56}
-        spacing: Window.height/30
+        spacing: self.parent.height/30
 
         RoundedControlButton:
             text: "UP"
@@ -151,7 +152,7 @@ FloatLayout:
         color: 1, 1, 1, 1
         size_hint: None, None
         size: self.texture_size
-        font_size: min(Window.width, Window.height) * 0.125
+        font_size: min(self.parent.width, self.parent.height) * 0.125
         pos_hint: {"center_x": 0.125, "center_y": 0.5}
         canvas.before:
             PushMatrix:
@@ -166,7 +167,7 @@ FloatLayout:
         color: 1, 1, 1, 1
         size_hint: None, None
         size: self.texture_size
-        font_size: min(Window.width, Window.height) * 0.125
+        font_size: min(self.parent.width, self.parent.height) * 0.125
         pos_hint: {"center_x": 0.875, "center_y": 0.5}
         canvas.before:
             PushMatrix:
@@ -184,9 +185,10 @@ FloatLayout:
     FloatLayout:
         id: side_panel
         size_hint: None, None
-        pos: (Window.width, Window.height*3/4)
-        width: Window.width * 0.25
-        height: Window.height/4
+        x: self.parent.width 
+        y: self.parent.height - self.height
+        width: self.parent.width * 0.25
+        height: self.parent.height / 4
         canvas.before:
             Color:
                 rgba: 0.12, 0.12, 0.14, 0.95
@@ -209,7 +211,7 @@ FloatLayout:
             font_size: min(self.parent.width, self.parent.height) * 0.13
             pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.5)
             size: self.texture_size
-            on_release: app.menu_info()
+            on_release: app.info_panel()
 
         Button:
             text: "-Contact"
@@ -219,11 +221,103 @@ FloatLayout:
             font_size: min(self.parent.width, self.parent.height) * 0.13
             pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.25)
             size: self.texture_size
-            on_release: app.menu_contact()
+            on_release: app.contact_panel()
             
-        FloatLayout:
-            id: menu_content
+    FloatLayout:
+        id: info_panel
+        size_hint: None, None
+        x: self.parent.width 
+        y: self.parent.height - self.height
+        width: self.parent.width * 0.25
+        height: self.parent.height / 4
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.14, 0.95
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            text: "Information"
             size_hint: None, None
-            pos: (Window.width, Window.height*3/4)
-            heigh: Window.height/4
-            width: Window.width * 0.25
+            color: 1, 1, 1, 1
+            pos: (info_panel.x + info_panel.width * 0.25, info_panel.y + info_panel.height * 0.75)
+            font_size: min(info_panel.width, info_panel.height) * 0.15
+            size: self.texture_size
+        
+        Label:
+            text: "Version: 0.0.1 beta"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            pos: (info_panel.x + info_panel.width * 0.1, info_panel.y + info_panel.height * 0.5)
+            font_size: min(info_panel.width, info_panel.height) * 0.12
+            size: self.texture_size
+
+        Label:
+            text: "PID:"
+            size_hint: None,None
+            color: 1, 1, 1, 1
+            pos: (info_panel.x + info_panel.width * 0.1, info_panel.y + info_panel.height * 0.33)
+            font_size: min(info_panel.width, info_panel.height) * 0.12
+            size: self.texture_size
+
+        Button:
+            text: "Back"
+            size_hint: None, None
+            pos_hint: {"center_x": 0.8, "center_y": 0.1}
+            background_normal: ""
+            background_color: 1, 1, 1, 0
+            color: 1, 1, 1, 1
+            font_size: min(info_panel.width, info_panel.height) * 0.13
+            on_release: app.back_button()
+    
+
+    FloatLayout:
+        id: contact_panel
+        size_hint: None, None
+        x: self.parent.width 
+        y: self.parent.height - self.height
+        width: self.parent.width * 0.25
+        height: self.parent.height / 4
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.14, 0.95
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            text: "Contact"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            pos: (contact_panel.x + contact_panel.width * 0.25, contact_panel.y + contact_panel.height * 0.75)
+            font_size: min(contact_panel.width, contact_panel.height) * 0.15
+            size: self.texture_size
+        
+        Label:
+            text: "Team: 황 안아오정"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            font_name: "fonts/NotoSansKR-Regular.ttf"
+            pos: (contact_panel.x + contact_panel.width * 0.1, contact_panel.y + contact_panel.height * 0.5)
+            font_size: min(contact_panel.width, contact_panel.height) * 0.12
+            size: self.texture_size
+
+        Label:
+            text: "Team leader: 안시준"
+            size_hint: None,None
+            color: 1, 1, 1, 1
+            font_name: "fonts/NotoSansKR-Regular.ttf"
+            pos: (contact_panel.x + contact_panel.width * 0.1, contact_panel.y + contact_panel.height * 0.33)
+            font_size: min(contact_panel.width, contact_panel.height) * 0.12
+            size: self.texture_size
+
+        Button:
+            text: "Back"
+            size_hint: None, None
+            pos_hint: {"center_x": 0.8, "center_y": 0.1}
+            background_normal: ""
+            background_color: 1, 1, 1, 0
+            color: 1, 1, 1, 1
+            font_size: min(contact_panel.width, contact_panel.height) * 0.13
+            on_release: app.back_button()
