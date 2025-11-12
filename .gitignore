@@ -1,5 +1,11 @@
 config.py
 venv
+*.jpg
+# Buildozer temporary/build files
+.buildozer/
+bin/
+bin.zip
+# macOS system files
 .DS_Store
 DS_Store
-*.jpg
+
