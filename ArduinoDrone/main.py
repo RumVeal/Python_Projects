@@ -1,17 +1,18 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.animation import Animation
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.label import Label
-from kivy.graphics import Color, Rectangle
-from kivy.uix.button import Button
-from kivy.properties import BooleanProperty
-
+from kivy.properties import StringProperty
+from kivy.storage.jsonstore import JsonStore
+import os
     
 class DroneUI(App):
     count_on_off = 0
+    pid_value = StringProperty("")
     
     def build(self):
+        self.store = JsonStore(os.path.join(self.user_data_dir, "settings.json"))
+        if self.store.exists("pid"):
+            self.pid_value = self.store.get("pid")["value"]
         return Builder.load_file("ui.kv")
     
     
@@ -45,7 +46,7 @@ class DroneUI(App):
     def down(self):
         print("DOWN")
         
-        
+
         
     def side_panel(self):
         panel = self.root.ids.side_panel
@@ -90,6 +91,11 @@ class DroneUI(App):
         info = self.root.ids.menu_content
         info.clear_widgets()
         
+    def save_pid(self, text):
+        self.pid_value = text
+        self.store.put("pid", value=text)
+
+
 
 
 if __name__ == '__main__':

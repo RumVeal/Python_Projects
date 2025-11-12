@@ -260,6 +260,21 @@ FloatLayout:
             pos: (info_panel.x + info_panel.width * 0.1, info_panel.y + info_panel.height * 0.33)
             font_size: min(info_panel.width, info_panel.height) * 0.12
             size: self.texture_size
+        TextInput:
+            id: pid_input
+            text: app.pid_value     # <-- подгружаем сохранённое значение
+            multiline: False
+            input_filter: "int"     # <-- если PID только числа, иначе убери
+            background_color: 0.20, 0.20, 0.25, 1
+            foreground_color: 1, 1, 1, 1
+            cursor_color: 1, 1, 1, 1
+            size_hint: None, None
+            width: info_panel.width * 0.45
+            height: info_panel.height * 0.15
+            pos: (info_panel.x + info_panel.width * 0.3, info_panel.y + info_panel.height * 0.32)
+            on_text_validate: app.save_pid(self.text)
+            on_focus:
+                if not self.focus: app.save_pid(self.text)
 
         Button:
             text: "Back"
