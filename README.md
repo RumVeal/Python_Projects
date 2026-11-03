@@ -2,6 +2,11 @@
 
 Personal projects written in Python.
 
+| Project | Description |
+|---|---|
+| [ArduinoDrone](ArduinoDrone) | Kivy app for controlling an Arduino drone via Bluetooth *(in progress)* |
+| [VKGameBot](VKGameBot) | Game bot for VK group chats: roulette, rock-paper-scissors, blackjack, points and levels |
+
 ## 🚁 ArduinoDrone — mobile controller for an Arduino drone
 
 A Kivy app that controls a homemade Arduino-based drone over Bluetooth (HC-05 module).

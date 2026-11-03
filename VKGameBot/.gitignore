@@ -1,0 +1,15 @@
+# secrets and data
+.env
+*.db
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.pytest_cache/
+
+# macOS / editors
+.DS_Store
+.vscode/
+.idea/
