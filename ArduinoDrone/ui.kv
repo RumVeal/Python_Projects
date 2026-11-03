@@ -69,16 +69,16 @@
             pos: self.x, self.y
             size: self.width * 0.6, self.height * 0.07
  
-<DPad@GridLayout>:
+<DPad_left@GridLayout>:
     rows: 3
     cols: 3
     size_hint: None, None
-    size: (min(Window.width, Window.height) * 0.6, min(Window.width, Window.height) * 0.6)
+    size: (min(Window.width, Window.height) * 0.7, min(Window.width, Window.height) * 0.7)
     spacing: dp(0)
     row_force_default: True
-    row_default_height: min(Window.width, Window.height) * 0.17
+    row_default_height: min(Window.width, Window.height) * 0.14
     col_force_default: True
-    col_default_width: min(Window.width, Window.height) * 0.17
+    col_default_width: min(Window.width, Window.height) * 0.14
 
     Widget:
     RoundedButton:
@@ -100,7 +100,36 @@
         on_release: app.backward()
     Widget:
 
+<DPad_right@GridLayout>:
+    rows: 3
+    cols: 3
+    size_hint: None, None
+    size: (min(Window.width, Window.height) * 0.7, min(Window.width, Window.height) * 0.7)
+    spacing: dp(0)
+    row_force_default: True
+    row_default_height: min(Window.width, Window.height) * 0.14
+    col_force_default: True
+    col_default_width: min(Window.width, Window.height) * 0.14
 
+    Widget:
+    RoundedButton:
+        text: "^"
+        on_release: app.up()
+    Widget:
+
+    RoundedButton:
+        text: "<"
+        on_release: app.yaw_left()
+    Widget:
+    RoundedButton:
+        text: ">"
+        on_release: app.yaw_right()
+
+    Widget:
+    RoundedButton:
+        text: "v"
+        on_release: app.down()
+    Widget:
 
 
 FloatLayout:
@@ -116,32 +145,36 @@ FloatLayout:
         text: "OFF"
         btn_color: 0.7, 0, 0, 1
         on_release: app.on_off(self)
-    DPad:
-        size_hint: None, None
-        pos_hint: {"center_x":0.35, "center_y":13/56}
-
     
     BoxLayout:
         orientation: "vertical"
         size_hint: None, None
-        width: min(self.parent.width, self.parent.height) * 0.30
-        height: self.minimum_height
-        pos_hint: {"center_x": 0.8, "center_y": 15/56}
-        spacing: self.parent.height/30
+        height: min(Window.width, Window.height) * 0.3
+        width: min(Window.width, Window.height) * 0.45
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        canvas.before:
+            Color:
+                rgba: 0.10, 0.10, 0.15, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            id: terminal_label
+            text: app.terminal_text if app.terminal_text else "Waiting for data..."
+            color: 1, 1, 1, 1
+            haling: "left"
+            valign: "top"
+            text_size: self.size
+            font_size: min(Window.width, Window.height) * 0.025
 
-        RoundedControlButton:
-            text: "UP"
-            on_press: self.canvas.before.children[0].rgba = (0.10, 0.40, 0.9, 1)
-            on_release:
-                self.canvas.before.children[0].rgba = (0.20, 0.60, 1, 1)
-                app.up()
+    DPad_left:
+        size_hint: None, None
+        pos_hint: {"center_x":0.4, "center_y":13/56}
+    DPad_right:
+        size_hint: None, None
+        pos_hint: {"center_x":0.85, "center_y":13/56}
 
-        RoundedControlButton:
-            text: "DOWN"
-            on_press: self.canvas.before.children[0].rgba = (0.10, 0.40, 0.9, 1)
-            on_release:
-                self.canvas.before.children[0].rgba = (0.20, 0.60, 1, 1)
-                app.down()
     
     MenuButton:
         size: (min(Window.width, Window.height) * 0.08, min(Window.width, Window.height) * 0.07)
@@ -220,7 +253,7 @@ FloatLayout:
             size: self.texture_size
 
         Label:
-            text: "PID:"
+            text: "MAC:"
             size_hint: None,None
             color: 1, 1, 1, 1
             pos: (info_panel.x + info_panel.width * 0.1, info_panel.y + info_panel.height * 0.33)
