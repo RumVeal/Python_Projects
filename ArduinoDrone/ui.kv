@@ -1,0 +1,338 @@
+#:import dp kivy.metrics.dp
+#:import Window kivy.core.window.Window
+
+<RoundedButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 1, 1, 1, 0
+    color: 1, 1, 1, 1
+    font_size: min(Window.width, Window.height) * 0.05
+    canvas.before:
+        Color:
+            rgba: (0.20, 0.60, 1, 1) if self.state == "normal" else (0.10, 0.40, 0.9, 1)
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.width/4]
+
+<RoundedControlButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 0.20, 0.60, 1, 0
+    color: 1, 1, 1, 1
+    font_size: min(Window.width, Window.height) * 0.03
+    size_hint_y: None
+    height: Window.height * 0.125
+    canvas.before:
+        Color:
+            rgba: 0.20, 0.60, 1, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [24] 
+
+<EllipseButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 1, 1, 1, 0
+    size_hint: None, None
+    font_size: min(Window.width, Window.height) * 0.12
+    pos_hint: {"center_x": 0.5, "center_y": 0.75}
+    size: (min(Window.width, Window.height) * 0.60, min(Window.width, Window.height) * 0.60)
+    btn_color: 0.7, 0, 0, 1
+    canvas.before:
+        Color:
+            rgba: self.btn_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.width/2]
+
+<MenuButton@Button>:
+    background_normal: ""
+    background_down: ""
+    background_color: 0, 0, 0, 0   # фон прозрачный (или поменяешь)
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.x, self.y + self.height * 0.66
+            size: self.width * 0.6, self.height * 0.07
+
+        Rectangle:
+            pos: self.x, self.y + self.height * 0.33
+            size: self.width * 0.6, self.height * 0.07
+
+        Rectangle:
+            pos: self.x, self.y
+            size: self.width * 0.6, self.height * 0.07
+ 
+<DPad_left@GridLayout>:
+    rows: 3
+    cols: 3
+    size_hint: None, None
+    size: (min(Window.width, Window.height) * 0.7, min(Window.width, Window.height) * 0.7)
+    spacing: dp(0)
+    row_force_default: True
+    row_default_height: min(Window.width, Window.height) * 0.14
+    col_force_default: True
+    col_default_width: min(Window.width, Window.height) * 0.14
+
+    Widget:
+    RoundedButton:
+        text: "^"
+        on_release: app.forward()
+    Widget:
+
+    RoundedButton:
+        text: "<"
+        on_release: app.left()
+    Widget:
+    RoundedButton:
+        text: ">"
+        on_release: app.right()
+
+    Widget:
+    RoundedButton:
+        text: "v"
+        on_release: app.backward()
+    Widget:
+
+<DPad_right@GridLayout>:
+    rows: 3
+    cols: 3
+    size_hint: None, None
+    size: (min(Window.width, Window.height) * 0.7, min(Window.width, Window.height) * 0.7)
+    spacing: dp(0)
+    row_force_default: True
+    row_default_height: min(Window.width, Window.height) * 0.14
+    col_force_default: True
+    col_default_width: min(Window.width, Window.height) * 0.14
+
+    Widget:
+    RoundedButton:
+        text: "^"
+        on_release: app.up()
+    Widget:
+
+    RoundedButton:
+        text: "<"
+        on_release: app.yaw_left()
+    Widget:
+    RoundedButton:
+        text: ">"
+        on_release: app.yaw_right()
+
+    Widget:
+    RoundedButton:
+        text: "v"
+        on_release: app.down()
+    Widget:
+
+
+FloatLayout:
+    size_hint: 1, 1
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.3, 1
+        Rectangle:
+            pos: 0, 0
+            size: (self.width, self.height)
+    EllipseButton:
+        id: power_btn
+        text: "OFF"
+        btn_color: 0.7, 0, 0, 1
+        on_release: app.on_off(self)
+    
+    BoxLayout:
+        orientation: "vertical"
+        size_hint: None, None
+        height: min(Window.width, Window.height) * 0.3
+        width: min(Window.width, Window.height) * 0.45
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        canvas.before:
+            Color:
+                rgba: 0.10, 0.10, 0.15, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            id: terminal_label
+            text: app.terminal_text if app.terminal_text else "Waiting for data..."
+            color: 1, 1, 1, 1
+            haling: "left"
+            valign: "top"
+            text_size: self.size
+            font_size: min(Window.width, Window.height) * 0.025
+
+    DPad_left:
+        size_hint: None, None
+        pos_hint: {"center_x":0.4, "center_y":13/56}
+    DPad_right:
+        size_hint: None, None
+        pos_hint: {"center_x":0.85, "center_y":13/56}
+
+    
+    MenuButton:
+        size: (min(Window.width, Window.height) * 0.08, min(Window.width, Window.height) * 0.07)
+        pos_hint: {"right": 1, "top": 1}
+        on_release: app.side_panel()
+
+    FloatLayout:
+        id: side_panel
+        size_hint: None, None
+        x: self.parent.width 
+        y: self.parent.height - self.height
+        width: self.parent.width * 0.25
+        height: self.parent.height / 4 / 3 * 1.5
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.14, 0.95
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Label:
+            text: "Menu"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            font_size: min(self.parent.width, self.parent.height) * 0.15
+            pos: (self.parent.x + self.parent.width * 0.25, self.parent.y + self.parent.height * 0.75)
+            size: self.texture_size
+
+        Button:
+            text: "-Information"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            background_color: 1, 1, 1, 0
+            font_size: min(self.parent.width, self.parent.height) * 0.13
+            pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.5)
+            size: self.texture_size
+            on_release: app.info_panel()
+
+        Button:
+            text: "-Contact"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            background_color: 1, 1, 1, 0
+            font_size: min(self.parent.width, self.parent.height) * 0.13
+            pos: (self.parent.x + self.parent.width * 0.1, self.parent.y + self.parent.height * 0.25)
+            size: self.texture_size
+            on_release: app.contact_panel()
+            
+    FloatLayout:
+        id: info_panel
+        size_hint: None, None
+        x: self.parent.width 
+        y: self.parent.height - self.height
+        width: self.parent.width * 0.25
+        height: self.parent.height / 4 / 3 * 1.5
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.14, 0.95
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            text: "Information"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            pos: (info_panel.x + info_panel.width * 0.22, info_panel.y + info_panel.height * 0.75)
+            font_size: min(info_panel.width, info_panel.height) * 0.15
+            size: self.texture_size
+        
+        Label:
+            text: "Version: 0.0.1 beta"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            pos: (info_panel.x + info_panel.width * 0.1, info_panel.y + info_panel.height * 0.5)
+            font_size: min(info_panel.width, info_panel.height) * 0.11
+            size: self.texture_size
+
+        Label:
+            text: "MAC:"
+            size_hint: None,None
+            color: 1, 1, 1, 1
+            pos: (info_panel.x + info_panel.width * 0.1, info_panel.y + info_panel.height * 0.33)
+            font_size: min(info_panel.width, info_panel.height) * 0.11
+            size: self.texture_size
+        TextInput:
+            id: pid_input
+            text: app.pid_value     # <-- подгружаем сохранённое значение
+            multiline: False
+            input_filter: "int"     # <-- если PID только числа, иначе убери
+            background_color: 0.20, 0.20, 0.25, 1
+            foreground_color: 1, 1, 1, 1
+            cursor_color: 1, 1, 1, 1
+            size_hint: None, None
+            width: info_panel.width * 0.45
+            height: info_panel.height * 0.13
+            font_size: info_panel.height * 0.07
+            pos: (info_panel.x + info_panel.width * 0.3, info_panel.y + info_panel.height * 0.32)
+            on_text_validate: app.save_pid(self.text)
+            on_focus:
+                if not self.focus: app.save_pid(self.text)
+
+        Button:
+            text: "Back"
+            size_hint: None, None
+            pos_hint: {"center_x": 0.8, "center_y": 0.1}
+            background_normal: ""
+            background_color: 1, 1, 1, 0
+            color: 1, 1, 1, 1
+            font_size: min(info_panel.width, info_panel.height) * 0.13
+            on_release: app.back_button()
+    
+
+    FloatLayout:
+        id: contact_panel
+        size_hint: None, None
+        x: self.parent.width 
+        y: self.parent.height - self.height
+        width: self.parent.width * 0.25
+        height: self.parent.height / 4 / 3 * 1.5
+        canvas.before:
+            Color:
+                rgba: 0.12, 0.12, 0.14, 0.95
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            text: "Contact"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            pos: (contact_panel.x + contact_panel.width * 0.25, contact_panel.y + contact_panel.height * 0.75)
+            font_size: min(contact_panel.width, contact_panel.height) * 0.15
+            size: self.texture_size
+        
+        Label:
+            text: "Team: 황 안아오정"
+            size_hint: None, None
+            color: 1, 1, 1, 1
+            font_name: "fonts/NotoSansKR-Regular.ttf"
+            pos: (contact_panel.x + contact_panel.width * 0.1, contact_panel.y + contact_panel.height * 0.5)
+            font_size: min(contact_panel.width, contact_panel.height) * 0.1
+            size: self.texture_size
+
+        Label:
+            text: "Team leader: 안시준"
+            size_hint: None,None
+            color: 1, 1, 1, 1
+            font_name: "fonts/NotoSansKR-Regular.ttf"
+            pos: (contact_panel.x + contact_panel.width * 0.1, contact_panel.y + contact_panel.height * 0.33)
+            font_size: min(contact_panel.width, contact_panel.height) * 0.1
+            size: self.texture_size
+
+        Button:
+            text: "Back"
+            size_hint: None, None
+            pos_hint: {"center_x": 0.8, "center_y": 0.1}
+            background_normal: ""
+            background_color: 1, 1, 1, 0
+            color: 1, 1, 1, 1
+            font_size: min(contact_panel.width, contact_panel.height) * 0.13
+            on_release: app.back_button()
